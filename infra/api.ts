@@ -1,4 +1,5 @@
 import { drainsTable, drainMessagesTable } from "./storage"
+import { heartbeatTable, sensorDataTable, historyMetricsTable } from "./database"
 
 const dbPermissions = [{ actions: ["dynamodb:*"], resources: ["*"] }]
 const comprehendPermissions = [{ actions: ["comprehend:DetectSentiment"], resources: ["*"] }]
@@ -46,5 +47,18 @@ api.route("POST /sensor-data", {
 api.route("POST /heartbeat", {
   handler: "packages/functions/src/heartbeat.handler",
   link: [drainsTable],
+  permissions: dbPermissions,
+})
+
+// History — saves and retrieves 24h sensor readings
+api.route("POST /history", {
+  handler: "packages/functions/src/history.handler",
+  link: [historyMetricsTable],
+  permissions: dbPermissions,
+})
+
+api.route("GET /history/{drainId}", {
+  handler: "packages/functions/src/history.handler",
+  link: [historyMetricsTable],
   permissions: dbPermissions,
 })

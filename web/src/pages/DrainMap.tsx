@@ -7,6 +7,8 @@ import { DrainDialog } from "@/components/DrainDialog"
 import { DrainMarker } from "@/components/DrainMarker"
 import { Moon, Sun, Loader2, Flag } from "lucide-react"
 import { fetchDrains } from "@/lib/api"
+import DrainHeatMap from "@/components/DrainHeatMap"
+import DrainHistoryChart from "@/components/DrainHistoryChart"
 
 const JAMAICA = { center: [-77.3, 18.15] as [number, number], zoom: 8.6 }
 
@@ -79,6 +81,11 @@ function DrainMap() {
           <MapControls showCompass />
         </Map>
       </Card>
+      {/* Charts */}
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <DrainHeatMap />
+        <DrainHistoryChart />
+      </div>
       <DrainDialog
         open={!!selectedDrain}
         onClose={() => setSelectedDrain(null)}
