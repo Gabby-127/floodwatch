@@ -1,4 +1,4 @@
-/// <reference path="./sst.d.ts" />
+
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 import { userPool } from "./cognito";
