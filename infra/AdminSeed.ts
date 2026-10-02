@@ -3,6 +3,10 @@ import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
 import { userPool } from "./cognito";
 
+for (const key of ["ADMIN_EMAIL", "ADMIN_TEMP_PASSWORD"]) {
+  if (!process.env[key]) throw new Error(`Missing required env var: ${key}`);
+}
+
 export const adminSeedFunction = new aws.lambda.Function("AdminSeedFunction", {
   runtime: aws.lambda.Runtime.NodeJS20dX,
   handler: "index.handler",
@@ -84,8 +88,8 @@ export const adminSeedFunction = new aws.lambda.Function("AdminSeedFunction", {
   environment: {
     variables: {
       USER_POOL_ID: userPool.id,
-      ADMIN_EMAIL: process.env.ADMIN_EMAIL || "admin@example.com",
-      ADMIN_TEMP_PASSWORD: process.env.ADMIN_TEMP_PASSWORD || "Admin@2026",
+      ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+      ADMIN_TEMP_PASSWORD: process.env.ADMIN_TEMP_PASSWORD,
       ADMIN_FIRST_NAME: process.env.ADMIN_FIRST_NAME || "Admin",
       ADMIN_LAST_NAME: process.env.ADMIN_LAST_NAME || "User",
     },
